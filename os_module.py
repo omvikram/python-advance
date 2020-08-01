@@ -19,7 +19,16 @@ f1.close()
 
 f2 = open(destination + "/test2.txt", 'w+')
 f2.write("TEST 1 FILE IN DESTINATION")
-f2close()
+f2.close()
 
 # lets delete the practice file you created in the beginning
 #os.unlink('practice.txt')
+
+#list down everyhing in the path 
+for each in os.walk(path):
+    print(each)
+
+
+import shutil
+#shutil.move(source + "/test1.txt",destination)
+shutil.move(destination + "/test1.txt",source)
