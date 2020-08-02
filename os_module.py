@@ -30,5 +30,5 @@ for each in os.walk(path):
 
 
 import shutil
-#shutil.move(source + "/test1.txt",destination)
-shutil.move(destination + "/test1.txt",source)
+shutil.move(source + "/test1.txt",destination)
+shutil.move(source + "/test2.txt",destination)
