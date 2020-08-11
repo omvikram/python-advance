@@ -1,0 +1,88 @@
+**MySQL DB**
+
+auth_user, user_id, loggedin_time, locale - oAuth, jToken
+
+questions (txn table)
+question_id, title, body,  creation/update/modified time, upvote_count, downvote_count, novote_count, user_id
+
+
+Views (for select queries JOIN 3 tables and keep a very flat structure data)
+
+answers (txn table)
+answer_id, comment, creation/update/modified time, upvote_count, downvote_count, novote_count, user_id
+
+question_asnwers_mapping (one to many realtionship)
+question_id, answer_id
+
+
+**Data Layer > micro ORM**
+
+main functionalities > CRUD (question/answers)
+
+GET > Search all questions (REDIS/ES)
+GET > Search all answers (REDIS/ES)
+
+GET > question_id, Search all answers related to question_id, user_id
+
+POST > Creation new question/answer, user_id
+
+PUT > Update/Upvote/Downvote existing question/answer, user_id
+
+
+REST APIS (i18n -> es-ES, en-US)
+
+GET /api/v1/questions/?/      HeaderToken = user_id        all/particular question details
+
+GET /api/v1/answers/?/       HeaderToken = user_id          all/particular answer details
+
+GET /api/v1/question/title   particular question with title details
+
+POST /api/v1/questions/      body = {}  HeaderToken = user_id    create a question by the user 
+
+POST /api/v1/answers/      body = {}  HeaderToken = user_id    create a answer/comment by the user 
+
+PUT /api/v1/questions/      body = {}  HeaderToken = user_id    updates a question by the user 
+
+PUT /api/v1/answers/      body = {}  HeaderToken = user_id    updates a answer/comment by the user 
+
+
+HTTP Status Code 2xx,4xx, 5xx
+{
+    success : true/false
+    data:
+    {
+        question_id
+    }
+    error:
+    {
+        error_code :
+        error_message : INTERNAL_SERVER_ERROR_ES
+    }
+    message:
+    {
+        message_code =1001
+        message_Str =""
+    }
+    pageinfo:
+    {
+        startindex, 
+        endindex, 
+        page_size
+    }
+}
+
+"Duplicacy Check"
+
+First > POST call and check the title in MySQL Query (try, catch, resultset = 0) Master
+
+Second > Take the tile and SELECT first title IN '%title%' > ReadReplica 
+
+if (true)
+return duplicate ccheck
+else
+INSERT (Master DB)
+
+
+
+
+
